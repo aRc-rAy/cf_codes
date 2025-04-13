@@ -1,3 +1,6 @@
-ll dis = pos - v[ptr];
-                  // time += dis;
-                  // v[ptr] += dis;
+while (pi <= i && t.getmax(v[i], pi) >= k)
+            // {
+            //       ans = min(ans, i - pi + 1);
+            //       // t.remove(v[pi]);
+            //       pi++;
+            // }
