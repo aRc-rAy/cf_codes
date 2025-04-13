@@ -27,31 +27,27 @@ void solve(ll test)
       ll ans = 0;
       auto ispos = [&](ll mid) -> bool
       {
-            set<ll> run;
-            ll seg = 0;
-
-            ll iamnot = 0;
-
+            vector<bool> dp(n + 1, 0);
+            ll cnt = 0;
+            ll mex = 0;
             for (auto it : v)
             {
-                  run.insert(it);
+                  if (it < n + 1)
+                        dp[it] = 1;
 
-                  while (run.size() && *run.begin() == iamnot)
+                  while (mex < n + 1 && dp[mex])
+                        mex++;
+
+                  if (mex >= mid)
                   {
-                        iamnot++;
-                        run.erase(run.begin());
-
-                        if (iamnot == mid)
-                        {
-                              iamnot = 0;
-                              seg++;
-                              run.clear();
-                        }
+                        for (int i = 0; i <= mex; i++)
+                              dp[i] = 0;
+                        cnt++;
+                        mex = 0;
                   }
             }
-            // cout << seg << " " << mid << endl;
 
-            return seg >= k;
+            return cnt >= k;
       };
 
       while (low <= high)
