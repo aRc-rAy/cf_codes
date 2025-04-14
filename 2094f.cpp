@@ -10,11 +10,16 @@ void inn()
       freopen("output.txt", "w", stdout);
 #endif
 }
+#define COLOR_RESET "\033[0m"
+#define COLOR_RED "\033[31m"
+#define COLOR_GREEN "\033[32m"
+#define debug(x) cerr << COLOR_RED << "[" << __LINE__ << "]\t" << #x << " -> " << x << COLOR_RESET << endl;
 
 void solve(ll test)
 {
       ll n, m, k;
       cin >> n >> m >> k;
+      debug(n);
 
       ll tot = n * m;
       ll oc = tot / k;
