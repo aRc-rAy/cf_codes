@@ -14,17 +14,20 @@ void inn()
 
 struct node
 {
-      unordered_map<int, node *> arr;
+      vector<node *> arr;
       vector<int> cnt;
       bool isend;
+      int maxIndex;
       node() : isend(false)
       {
             cnt.resize(2);
+            arr.resize(2, nullptr);
+            maxIndex = -1;
       }
 
       bool has(int ch)
       {
-            return arr.find(ch) != arr.end();
+            return arr[ch] != nullptr;
       }
 
       void put(int ch)
@@ -35,7 +38,7 @@ struct node
       {
             if (cnt[ch] == 1)
             {
-                  arr.erase(ch);
+                  arr[ch] = nullptr;
                   cnt[ch] = 0;
                   return true;
             }
@@ -60,7 +63,7 @@ struct trie
 
       ll get_state(ll i, ll num)
       {
-            return ((1ll << i) & num) ? 1 : 0;
+            return ((num >> i) & 1);
       }
 
       void insert(ll num)
@@ -75,6 +78,21 @@ struct trie
                         head->put(state);
                   head->cnt[state]++;
                   head = head->arr[state];
+            }
+      }
+      void insert(ll num, int id)
+      {
+            node *head = root;
+            head->maxIndex = id;
+            for (ll i = n; i >= 0; i--)
+            {
+                  ll state = get_state(i, num);
+
+                  if (!head->has(state))
+                        head->put(state);
+                  head->cnt[state]++;
+                  head = head->arr[state];
+                  head->maxIndex = id;
             }
       }
 
@@ -99,6 +117,25 @@ struct trie
                   {
                         return ans;
                   }
+            }
+            return ans;
+      }
+      ll getmax(ll num, ll id)
+      {
+            node *head = root;
+            ll ans = 0;
+            for (int i = n; i >= 0; i--)
+            {
+                  ll state = get_state(i, num);
+                  ll opp = 1 - state;
+                  if (head->has(opp) && head->arr[opp]->maxIndex >= id)
+                  {
+                        head = head->arr[opp];
+                        ans = ans + (1LL << i);
+                        continue;
+                  }
+
+                  head = head->arr[state];
             }
             return ans;
       }
@@ -138,13 +175,14 @@ void solve(ll test)
 
       for (ll i = 0; i < n; i++)
       {
-            t.insert(v[i]);
-            while (pi <= i && t.getmax(v[i]) >= k)
+            t.insert(v[i], i);
+            while (pi <= i && t.getmax(v[i], pi) >= k)
             {
                   ans = min(ans, i - pi + 1);
-                  t.remove(v[pi]);
+                  // t.remove(v[pi]);
                   pi++;
             }
+            // debug(t.getmax(v[i], pi));
 
             // debug(t.root.cnt[0]);
             // debug(t.root.cnt[1]);
