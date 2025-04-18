@@ -1,2 +1,1 @@
-
-                        // debug(extra)
+1ll << i
