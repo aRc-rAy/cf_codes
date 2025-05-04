@@ -1,0 +1,105 @@
+#include <bits/stdc++.h>
+typedef long long int ll;
+using namespace std;
+#define mod 1000000007
+#define MAXX 100005
+#define RED "\033[31m"
+#define GREEN "\033[32m"
+#define YELLOW "\033[33m"
+#define RESET "\033[0m"
+#define debug(x) cerr << RED << "Line [" << __LINE__ << "]\t" << #x << " -> " << x << RESET << endl;
+void inn()
+{
+#ifndef ONLINE_JUDGE
+      freopen("input.txt", "r", stdin);
+      freopen("output.txt", "w", stdout);
+#endif
+}
+void solve(ll test)
+{
+      ll n, k;
+      cin >> n >> k;
+      vector<ll> a(n), b(n);
+      for (auto &it : a)
+            cin >> it;
+      for (auto &it : b)
+            cin >> it;
+
+      ll sum = -1;
+      // single sum
+      for (int i = 0; i < n; i++)
+      {
+            if (b[i] != -1)
+            {
+                  ll cur = a[i] + b[i];
+
+                  if (sum == -1)
+                  {
+                        sum = cur;
+                  }
+
+                  if (sum != cur)
+                  {
+                        cout << 0 << endl;
+                        return;
+                  }
+            }
+      }
+
+      if (sum != -1)
+      {
+            for (int i = 0; i < n; i++)
+            {
+                  if (b[i] == -1)
+                  {
+                        ll ot = sum - a[i];
+
+                        if (ot > k || ot < 0)
+                        {
+                              cout << 0 << endl;
+                              return;
+                        }
+                  }
+            }
+
+            cout << 1 << endl;
+            return;
+      }
+
+      ll mini = 1e12;
+      ll maxi = -1;
+
+      for (auto it : a)
+      {
+            mini = min(mini, it);
+            maxi = max(maxi, it);
+      }
+
+      ll li = mini;
+
+      ll lj = mini + k;
+
+      ll ri = maxi;
+
+      ll rj = maxi + k;
+
+      if (ri > lj)
+      {
+            cout << 0 << endl;
+            return;
+      }
+
+      cout << lj - ri + 1 << endl;
+}
+int main()
+{
+      ios_base::sync_with_stdio(0), cin.tie(0);
+      inn();
+      int t = 1;
+      cin >> t;
+      for (int i = 1; i <= t; i++)
+      {
+            solve(i);
+      }
+      return 0;
+}
