@@ -65,8 +65,6 @@ void solve(ll test)
             high += d[i];
         }
 
-        // debug(d[i], low, high, l, r);
-
         low = max(low, l);
         high = min(high, r);
 
@@ -97,27 +95,20 @@ void solve(ll test)
     }
 
     int i = 0;
-    ll curh = 0;
-    for (auto it : path)
+    ll curh = path[n - 1].first;
+    for (int i = n - 1; i >= 0; i--)
     {
-        low = it.first;
-        high = it.second;
-
         if (d[i] != -1)
         {
             ans[i] = d[i];
-            curh += d[i];
+            curh -= d[i];
         }
         else
         {
-            ans[i] = 0;
-            if (curh + 1 <= phigh[i])
-            {
-                ans[i] = 1;
-                curh++;
-            }
+            ll ncur = max(curh - 1, (i ? path[i - 1].first : 0));
+            ans[i] = curh - ncur;
+            curh -= ans[i];
         }
-        i++;
     }
     for (auto it : ans)
     {
